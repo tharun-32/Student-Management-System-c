@@ -1,0 +1,12 @@
+student: 1
+id: 1
+name: tharun
+cgpa: 8.10
+student: 2
+id: 2
+name: ram
+cgpa: 3.30
+student: 3
+id: 3
+name: arun
+cgpa: 4.40
