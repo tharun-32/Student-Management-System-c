@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 typedef struct{
     int id;
@@ -50,12 +49,11 @@ void add(){
     no_of_students = (int)strtol(buffer,NULL,10);
     Student *student = malloc(no_of_students * sizeof(Student));
     if(student == NULL){
-        printf("Memory allocation failed!\n");
+        printf("no such file!\n");
         return;
     }
     FILE *pFile = fopen("student_data.txt","a");
     for(int i=0; i < no_of_students; i++){
-        fprintf(pFile,"student: %d\n",i+1);
         printf("student: %d\n",i+1);
         //student id
         printf("enter the student id: ");
@@ -70,9 +68,7 @@ void add(){
         fgets(buffer,sizeof(buffer),stdin);
         student[i].cgpa= (float)strtod(buffer,NULL);
         //printing the values
-        fprintf(pFile,"id: %d\n",student[i].id);
-        fprintf(pFile,"name: %s\n",student[i].name);
-        fprintf(pFile,"cgpa: %.2lf\n",student[i].cgpa);
+        fprintf(pFile,"%d %s %.2lf",student[i].id,student[i].name,student[i].cgpa);
         fprintf(pFile,"\n"); // while printing there will be a gap 
     };
     fclose(pFile);
@@ -81,14 +77,49 @@ void add(){
 }
 //remove
 void delete(){
-
+    int delete_id;
+    char buffer[5];
+    printf("Enter the student id: ");
+    fgets(buffer,sizeof(buffer),stdin);
+    delete_id = (int)strtol(buffer,NULL,10);
+    FILE *pFile = fopen("student_data.txt", "r");
+    FILE *tempFile = fopen("temp.txt", "w");
+    if(pFile == NULL || tempFile == NULL){
+        printf("File error!\n");
+        return;
+    }
+    int id;
+    char name[50];
+    float cgpa;
+    int found = 0;
+    while(fscanf(pFile, "%d %s %f", &id, name, &cgpa) == 3){
+        if(id == delete_id){
+            found = 1;          // skip this record
+            continue;
+        }
+        fprintf(tempFile, "%d %s %.2f\n", id, name, cgpa);
+    }
+    fclose(pFile);
+    fclose(tempFile);
+    remove("student_data.txt");
+    rename("temp.txt", "student_data.txt");
+    if(found)
+        printf("Student deleted successfully.\n");
+    else
+        printf("Student ID not found.\n");
 }
 //view
 void show(){
+    int id;
+    char name[50];
+    float cgpa;
     FILE *pFile = fopen("student_data.txt","r");
     char buffer[1024] = {0};
-    while(fgets(buffer,sizeof(buffer),pFile) != NULL){
-        printf("%s",buffer);
-    }
+    printf("%-10s %-15s %-10s\n", "ID", "NAME", "CGPA");
+    printf("--------------------------------------\n");
+    while(fscanf(pFile, "%d %s %f", &id, name, &cgpa) == 3){
+        printf("%-10d %-15s %-10.2f\n", id, name, cgpa);
+    } 
     fclose(pFile);
+    printf("\n");
 }
