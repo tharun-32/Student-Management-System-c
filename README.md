@@ -15,5 +15,5 @@ how to use typedef with struct.
 ## Output
 ![Student Management Output](output/output.png)
 ![Add Student Data](output/add-student.png)
-![Delete Student Data](output/delete-student.png)
+![Delete Student Data](output/remove-student.png)
 ![View data](output/view-data.png)
