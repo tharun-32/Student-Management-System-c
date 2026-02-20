@@ -13,7 +13,7 @@ void delete();
 void show();
 
 int main(){
-    char user_choice;
+    int user_choice;
     char buffer[4];
     do{
         printf("Studen Management System\n");
@@ -30,11 +30,15 @@ int main(){
         switch (user_choice) {
             case 1:
                 add();
+                break;
             case 2:
                 delete();
+                break;
             case 3:
                 show();
+                break;
         }
+        printf("\n");
     }while(user_choice != 4);
     return 0;
 }
